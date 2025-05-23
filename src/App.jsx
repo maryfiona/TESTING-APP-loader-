@@ -1,7 +1,19 @@
+import { useEffect, useState } from 'react';
 import Loader from './components/Loader';
-import Load from './assets/loader.PNG'
+import Load from './assets/loader.PNG';
 
 const App = () => {
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const isMobile = screenWidth <= 600;
+
   return (
     <div
       style={{
@@ -11,41 +23,39 @@ const App = () => {
         flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: "40px 20px",
+        padding: isMobile ? "20px 10px" : "40px 20px",
         boxSizing: "border-box",
+        textAlign: "center",
       }}
     >
-      
       <img
         src={Load}
         alt="App Logo"
         style={{
-          maxWidth: "300px",
+          maxWidth: isMobile ? "300px" : "300px",
           height: "auto",
-          marginTop: "20px",
+          marginTop: isMobile ? "10px" : "20px",
         }}
       />
 
-      
       <h1
         style={{
-          fontSize: "2.5rem",
+          fontSize: isMobile ? "1.8rem" : "2.5rem",
           fontWeight: "bold",
-          letterSpacing: "0.2em",
+          letterSpacing: isMobile ? "0.1em" : "0.2em",
           textTransform: "uppercase",
-          marginTop: "10px",
+          
         }}
       >
         TESTING APP
       </h1>
 
-      
       <div
         style={{
           width: "100%",
           display: "flex",
           justifyContent: "center",
-          marginBottom: "30px",
+       
         }}
       >
         <Loader />

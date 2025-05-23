@@ -2,6 +2,13 @@ import { useEffect, useState } from "react";
 
 const Loader = () => {
   const [progress, setProgress] = useState(0);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     if (progress < 100) {
@@ -10,6 +17,8 @@ const Loader = () => {
     }
   }, [progress]);
 
+  const isSmall = screenWidth <= 320;
+
   return (
     <div
       style={{
@@ -17,38 +26,39 @@ const Loader = () => {
         alignItems: "center",
         justifyContent: "center",
         gap: "12px",
+        flexWrap: "wrap",
+        width: "100%",
+        maxWidth: "320px",
+        padding: isSmall ? "0 5px" : "0",
       }}
     >
-  
       <div
         style={{
-          width: "200px",
+          flex: "1",
+          minWidth: isSmall ? "160px" : "200px",
           height: "25px",
           border: "3px solid #333",
           borderRadius: "6px",
           overflow: "hidden",
           backgroundColor: "#eee",
-          position: "relative",
         }}
       >
-
         <div
           style={{
             height: "100%",
             width: `${progress}%`,
-            backgroundColor: "black", 
+            backgroundColor: "black",
             transition: "width 0.05s linear",
           }}
         />
       </div>
 
-
       <div
         style={{
-          width: "50px",
+          minWidth: "50px",
           textAlign: "right",
           fontWeight: "bold",
-          fontSize: "1.2rem",
+          fontSize: isSmall ? "1rem" : "1.2rem",
           fontFamily: "monospace",
         }}
       >
